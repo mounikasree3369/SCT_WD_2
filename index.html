@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AetherCalc | Premium Multi-Theme Scientific Calculator</title>
+  <meta name="description" content="Experience AetherCalc, a modern, highly interactive scientific calculator featuring gorgeous glassmorphism, triple custom themes (Glass Dark, Minimal Light, Cyberpunk Neon), keyboard support, and a history log.">
+  
+  <!-- Modern Typography from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons for modern aesthetic -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-glass-dark">
+  <div class="background-decorations">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <main class="app-container" id="app-container">
+    <!-- Calculator Card Container -->
+    <section class="calculator-card" id="calculator-card">
+      
+      <!-- Card Header: Theme Selector & Mode Info -->
+      <header class="calc-header">
+        <div class="brand">
+          <span class="logo-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+          <h1 class="logo-text">AetherCalc</h1>
+        </div>
+
+        <div class="controls-group">
+          <!-- Toggle Panels Buttons -->
+          <button class="header-action-btn" id="btn-toggle-history" title="Toggle History" aria-label="Toggle History">
+            <i class="fa-solid fa-history"></i>
+          </button>
+          
+          <button class="header-action-btn" id="btn-toggle-scientific" title="Scientific Functions (fx)" aria-label="Toggle Scientific Mode">
+            <span class="mode-indicator-text">fx</span>
+          </button>
+
+          <!-- Theme Toggle Switcher -->
+          <div class="theme-selector" role="group" aria-label="Theme selector">
+            <button class="theme-option active" id="theme-btn-dark" data-theme="glass-dark" title="Glass Dark Theme">
+              <i class="fa-solid fa-moon"></i>
+            </button>
+            <button class="theme-option" id="theme-btn-light" data-theme="minimal-light" title="Minimal Light Theme">
+              <i class="fa-solid fa-sun"></i>
+            </button>
+            <button class="theme-option" id="theme-btn-cyber" data-theme="cyberpunk" title="Cyberpunk Neon Theme">
+              <i class="fa-solid fa-bolt"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Calculator Screen Display -->
+      <div class="calc-display-wrapper">
+        <div class="display-row expression-row" id="display-expression" aria-live="polite"></div>
+        <div class="display-row result-row" id="display-result" aria-live="polite">0</div>
+        
+        <!-- Live status feedback indicator (mismatched brackets, scientific mode status, errors) -->
+        <div class="display-status-bar">
+          <span class="status-indicator" id="status-scientific-indicator"><i class="fa-solid fa-calculator"></i> Standard</span>
+          <span class="status-indicator error-indicator" id="status-error-msg" style="display: none;"></span>
+        </div>
+      </div>
+
+      <!-- Main Calculator Keypad Interface -->
+      <div class="keypad-layout">
+        
+        <!-- Collapsible Scientific Panel (drawer/top attachment) -->
+        <div class="scientific-panel collapsed" id="scientific-panel" aria-expanded="false">
+          <button class="calc-btn btn-sci" id="btn-bracket-open" data-insert="(">(</button>
+          <button class="calc-btn btn-sci" id="btn-bracket-close" data-insert=")">)</button>
+          <button class="calc-btn btn-sci" id="btn-power" data-insert="^">x<sup>y</sup></button>
+          <button class="calc-btn btn-sci" id="btn-sqrt" data-insert="sqrt(">√</button>
+          
+          <button class="calc-btn btn-sci" id="btn-sin" data-insert="sin(">sin</button>
+          <button class="calc-btn btn-sci" id="btn-cos" data-insert="cos(">cos</button>
+          <button class="calc-btn btn-sci" id="btn-tan" data-insert="tan(">tan</button>
+          <button class="calc-btn btn-sci" id="btn-pi" data-insert="π">π</button>
+          
+          <button class="calc-btn btn-sci" id="btn-log" data-insert="log(">log</button>
+          <button class="calc-btn btn-sci" id="btn-ln" data-insert="ln(">ln</button>
+          <button class="calc-btn btn-sci" id="btn-e" data-insert="e">e</button>
+          <button class="calc-btn btn-sci" id="btn-backspace-sci" data-action="backspace"><i class="fa-solid fa-backspace"></i></button>
+        </div>
+
+        <!-- Base Standard Keypad -->
+        <div class="standard-panel">
+          <!-- Row 1: Special control operations -->
+          <button class="calc-btn btn-special" id="btn-clear" data-action="clear">AC</button>
+          <button class="calc-btn btn-special" id="btn-backspace" data-action="backspace">DEL</button>
+          <button class="calc-btn btn-special" id="btn-modulo" data-insert="%">%</button>
+          <button class="calc-btn btn-operator" id="btn-divide" data-insert="÷">÷</button>
+          
+          <!-- Row 2 -->
+          <button class="calc-btn btn-number" id="btn-7" data-insert="7">7</button>
+          <button class="calc-btn btn-number" id="btn-8" data-insert="8">8</button>
+          <button class="calc-btn btn-number" id="btn-9" data-insert="9">9</button>
+          <button class="calc-btn btn-operator" id="btn-multiply" data-insert="×">×</button>
+          
+          <!-- Row 3 -->
+          <button class="calc-btn btn-number" id="btn-4" data-insert="4">4</button>
+          <button class="calc-btn btn-number" id="btn-5" data-insert="5">5</button>
+          <button class="calc-btn btn-number" id="btn-6" data-insert="6">6</button>
+          <button class="calc-btn btn-operator" id="btn-subtract" data-insert="-">-</button>
+          
+          <!-- Row 4 -->
+          <button class="calc-btn btn-number" id="btn-1" data-insert="1">1</button>
+          <button class="calc-btn btn-number" id="btn-2" data-insert="2">2</button>
+          <button class="calc-btn btn-number" id="btn-3" data-insert="3">3</button>
+          <button class="calc-btn btn-operator" id="btn-add" data-insert="+">+</button>
+          
+          <!-- Row 5 -->
+          <button class="calc-btn btn-number double-width" id="btn-0" data-insert="0">0</button>
+          <button class="calc-btn btn-number" id="btn-decimal" data-insert=".">.</button>
+          <button class="calc-btn btn-equals" id="btn-equals" data-action="evaluate">=</button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Interactive Slidable History Panel Overlay -->
+    <aside class="history-sidebar collapsed" id="history-sidebar" aria-label="Calculation History">
+      <div class="history-header">
+        <h2><i class="fa-solid fa-history"></i> Calculation Log</h2>
+        <button class="close-history-btn" id="btn-close-history" aria-label="Close History">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="history-list-wrapper" id="history-items-container">
+        <!-- Rendered dynamically via app.js -->
+        <div class="empty-history-msg" id="empty-history-msg">
+          <i class="fa-solid fa-folder-open"></i>
+          <p>No recent calculations</p>
+        </div>
+      </div>
+
+      <div class="history-footer">
+        <button class="clear-history-btn" id="btn-clear-history">
+          <i class="fa-solid fa-trash-can"></i> Clear Log
+        </button>
+      </div>
+    </aside>
+
+    <!-- Dynamic Toast Notification for errors / copying -->
+    <div class="toast-notification" id="toast-notification" role="status" aria-live="polite">
+      <span id="toast-message">Result copied to clipboard!</span>
+    </div>
+  </main>
+
+  <!-- Script Modules -->
+  <script src="parser.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
